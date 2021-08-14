@@ -96,9 +96,14 @@ const CreateBox = () => {
 		}
 		console.log("ONE");
 		if (isError) {
+			if (error) {
+				var erorrMessage = error.data.error;
+			} else {
+				erorrMessage = "Unable to create new task due to errors";
+			}
 			customToast({
 				title: "Error",
-				description: `${error.data.error}`,
+				description: `${erorrMessage}`,
 				status: "error",
 				duration: 3000,
 				isClosable: true,
@@ -235,9 +240,14 @@ const TaskLists = ({ data }) => {
 		}
 
 		if (loadingState === "Delete" && isDeleteError) {
+			if (deleteError) {
+				var erorrMessage = deleteError.data.error;
+			} else {
+				erorrMessage = "Unable to delete the selected task";
+			}
 			customToast({
 				title: "Error",
-				description: `${deleteError.data.error}`,
+				description: `${erorrMessage}`,
 				status: "error",
 				duration: 3000,
 				isClosable: true,
@@ -245,9 +255,14 @@ const TaskLists = ({ data }) => {
 			});
 		}
 		if (loadingState === "Update" && isUpdateError) {
+			if (updateError) {
+				var erorrMessage = updateError.data.error;
+			} else {
+				erorrMessage = "Unable to update the selected task";
+			}
 			customToast({
 				title: "Error",
-				description: `${updateError.data.error}. Thus, selected task will not be updated.`,
+				description: `${erorrMessage}`,
 				status: "error",
 				duration: 3000,
 				isClosable: true,

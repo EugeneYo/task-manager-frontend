@@ -75,9 +75,14 @@ const MenuBox = () => {
 		}
 
 		if (isError) {
+			if (error) {
+				var erorrMessage = error.data.error;
+			} else {
+				erorrMessage = "Unable to update your profile";
+			}
 			customToast({
 				title: "Error",
-				description: `${error.data.error}`,
+				description: `${erorrMessage}`,
 				status: "error",
 				duration: 3000,
 				isClosable: true,

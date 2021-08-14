@@ -88,9 +88,14 @@ const SignUp = () => {
 
 	useEffect(() => {
 		if (isError) {
+			if (error) {
+				var erorrMessage = error.data.error;
+			} else {
+				erorrMessage = "Unable to Sign Up due to errors";
+			}
 			customToast({
 				title: "Error",
-				description: `${error.data.error}`,
+				description: `${erorrMessage}`,
 				status: "error",
 				duration: 3000,
 				isClosable: true,
@@ -185,9 +190,14 @@ const SignIn = () => {
 
 	useEffect(() => {
 		if (isError) {
+			if (error) {
+				var erorrMessage = error.data.error;
+			} else {
+				erorrMessage = "Unable to Sign In due to errors";
+			}
 			customToast({
 				title: "Error",
-				description: `${error.data.error}`,
+				description: `${erorrMessage}`,
 				status: "error",
 				duration: 3000,
 				isClosable: true,
