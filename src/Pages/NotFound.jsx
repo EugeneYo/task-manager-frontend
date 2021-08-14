@@ -1,13 +1,13 @@
 import { Box, Text, VStack, Center, Spinner, useColorModeValue } from "@chakra-ui/react";
 import React, { useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const NotFound = () => {
 	const history = useHistory();
 	useEffect(() => {
-		setTimeout(() => {
-			history.push("/");
-		}, 3000);
+		// setTimeout(() => {
+		// 	history.push("/");
+		// }, 3000);
 		return () => {};
 	}, []);
 	return (
@@ -19,7 +19,7 @@ const NotFound = () => {
 
 				<Box d="flex">
 					<Text fontSize="xl" mx={4}>
-						Redirecting to Home Page
+						Redirect to <Link to="/"> Home Page </Link>
 					</Text>
 					<Spinner size="md" />
 				</Box>
