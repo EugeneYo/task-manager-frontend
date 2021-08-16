@@ -31,11 +31,12 @@ import { Link as RouterLink } from "react-router-dom";
 import theme from "../myTheme";
 import Settings from "./Settings";
 import { FaGithub } from "react-icons/fa";
+import useToast from "../Hooks/useToast";
 
 const MenuBox = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { isOpen: isPassword, onOpen: viewPassword, onClose: closePassword } = useDisclosure();
-	const [updateUser, { data, error, isError, isLoading, isSuccess }] = useUpdateUserMutation();
+	const [updateUser, { error, isError, isLoading, isSuccess }] = useUpdateUserMutation();
 	const { user, token } = useSelector((state) => state.user);
 
 	const [isEdit, setIsEdit] = useState(false);
@@ -43,9 +44,6 @@ const MenuBox = () => {
 		name: user.name,
 		email: user.email,
 		password: "",
-	});
-	const customToast = createStandaloneToast({
-		theme,
 	});
 	const prefersReducedMotion = usePrefersReducedMotion();
 	const smoothAnimation = keyframes`from {transform: translateX(0);} 50%{transform : translateX(10px);} to{transform: translateX(0)}`;
@@ -62,40 +60,15 @@ const MenuBox = () => {
 		});
 		setIsEdit(!isEdit);
 	};
-	useEffect(() => {
-		if (isSuccess) {
-			customToast({
-				title: "Updated successfully",
-				description: "Your profile is updated",
-				status: "success",
-				duration: 3000,
-				isClosable: true,
-				position: "top-right",
-			});
-		}
 
-		if (isError) {
-			if (error) {
-				var erorrMessage = error.data.error;
-			} else {
-				erorrMessage = "Unable to update your profile";
-			}
-			customToast({
-				title: "Error",
-				description: `${erorrMessage}`,
-				status: "error",
-				duration: 3000,
-				isClosable: true,
-				position: "top-right",
-			});
-		}
-		setUpdateDetails({
-			name: user.name,
-			email: user.email,
-			password: "",
-		});
-		return () => {};
-	}, [user, isError]);
+	useToast({
+		isError,
+		isSuccess,
+		error,
+		errorDescription: "Unable to update your profile",
+		successTitle: "Updated successfully",
+		successDescription: "Your profile is updated",
+	});
 	return (
 		<>
 			<Button

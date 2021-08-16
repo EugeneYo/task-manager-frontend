@@ -2,14 +2,10 @@ import React from "react";
 import {
 	FormControl,
 	FormLabel,
-	FormErrorMessage,
-	FormHelperText,
 	Input,
 	VStack,
-	Center,
 	InputGroup,
 	InputLeftElement,
-	Icon,
 	Button,
 	useDisclosure,
 	InputRightAddon,
@@ -20,31 +16,29 @@ import {
 	TabPanel,
 	TabPanels,
 	Box,
-	Text,
-	useColorModeValue,
-	Divider,
-	createStandaloneToast,
+	useStyleConfig,
 } from "@chakra-ui/react";
+import useToast from "../Hooks/useToast";
 import { InfoIcon, ViewIcon, EmailIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { HiOutlineMail } from "react-icons/hi";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useCreateUserMutation, useLoginUserMutation } from "../Store/services/user.service";
-import { Redirect, useHistory } from "react-router-dom";
-import theme from "../myTheme";
+import { Redirect } from "react-router-dom";
 
+// Basic Form styling
+const FormBox = (props) => {
+	const { children, ...rest } = props;
+	const styles = useStyleConfig("FormBox");
+	return (
+		<Box __css={styles} {...rest}>
+			{children}
+		</Box>
+	);
+};
+
+// Main
 const Form = () => {
 	return (
-		<Box
-			bg={useColorModeValue("white", "#313b47")}
-			w={{ base: "350px", sm: "450px", md: "550px" }}
-			p={3}
-			boxShadow="sm"
-			rounded="lg"
-			mx="auto"
-			mt={["28"]}
-			borderColor={useColorModeValue("teal.400", "")}
-			borderWidth={useColorModeValue("2px", "")}
-		>
+		<FormBox>
 			<Avatar bg="teal.400" mx="auto" w={12} alignSelf="center" display="block" my={8} />
 
 			<Tabs isFitted>
@@ -65,202 +59,122 @@ const Form = () => {
 					</TabPanel>
 				</TabPanels>
 			</Tabs>
-		</Box>
+		</FormBox>
 	);
 };
 
 const SignUp = () => {
-	const { isOpen: isPassword, onOpen: viewPassword, onClose: closePassword } = useDisclosure();
 	const [createUser, { error, isSuccess, isError, isLoading }] = useCreateUserMutation();
-	const [number, setNumber] = useState(0);
-	const customToast = createStandaloneToast({ theme });
 
-	const [signUp, setSignUp] = useState({
-		name: "",
-		email: "",
-		password: "",
-	});
-
-	const onSubmit = () => {
-		createUser(signUp).finally(() => {});
-		setNumber(number + 1);
+	const onFormSubmit = (event) => {
+		event.preventDefault();
+		const formData = new FormData(event.currentTarget);
+		const fieldValues = Object.fromEntries(formData.entries());
+		createUser(fieldValues);
 	};
-
-	useEffect(() => {
-		if (isError) {
-			if (error) {
-				var erorrMessage = error.data.error;
-			} else {
-				erorrMessage = "Unable to Sign Up due to errors";
-			}
-			customToast({
-				title: "Error",
-				description: `${erorrMessage}`,
-				status: "error",
-				duration: 3000,
-				isClosable: true,
-				position: "top",
-			});
-		}
-
-		if (isSuccess) {
-			customToast({
-				title: "Sign Up Successfully",
-				description: "Welcome to Simple Task Manager",
-				status: "success",
-				duration: 3000,
-				isClosable: true,
-				position: "top",
-			});
-		}
-	}, [isLoading]);
+	useToast({
+		isError,
+		isSuccess,
+		error,
+		errorDescription: "Unable to Sign Up",
+		successTitle: "Sign Up Successfully",
+		successDescription: "Welcome to Simple Task Manager",
+	});
 	return (
-		<form action="submit">
-			<VStack spacing={8}>
-				<FormControl id="username" isRequired>
-					<FormLabel fontSize={{ base: "lg", sm: "xl" }}>User Name</FormLabel>
-					<InputGroup>
-						<InputLeftElement children={<InfoIcon w={5} h={5} />} />
-						<Input
-							type="text"
-							placeholder="Your username"
-							onChange={(e) => {
-								setSignUp({ ...signUp, name: e.target.value });
-							}}
-						/>
-					</InputGroup>
-				</FormControl>
-				<FormControl id="email" isRequired>
-					<FormLabel fontSize={{ base: "lg", sm: "xl" }}>Email address</FormLabel>
-					<InputGroup>
-						<InputLeftElement children={<EmailIcon w={5} h={5} />} />
-						<Input
-							type="email"
-							placeholder="Your email"
-							onChange={(e) => {
-								setSignUp({ ...signUp, email: e.target.value });
-							}}
-						/>
-					</InputGroup>
-				</FormControl>
-				<FormControl id="password" isRequired>
-					<FormLabel fontSize={{ base: "lg", sm: "xl" }}>Password</FormLabel>
-					<InputGroup>
-						<Input
-							type={isPassword ? "text" : "password"}
-							placeholder="Your password"
-							onChange={(e) => {
-								setSignUp({ ...signUp, password: e.target.value });
-							}}
-						/>
-						<InputRightAddon
-							children={isPassword ? <ViewIcon w={4} h={4} /> : <ViewOffIcon w={4} h={4} />}
-							onClick={() => {
-								isPassword ? closePassword() : viewPassword();
-							}}
-						/>
-					</InputGroup>
-				</FormControl>
-
-				<Button onClick={onSubmit} isLoading={isLoading} fontSize={"sm"} fontWeight={400} variant="solid" colorScheme="teal" borderRadius="lg">
-					Sign Up
-				</Button>
-
-				{isSuccess && <Redirect to="/taskBoard" />}
-			</VStack>
-		</form>
+		<>
+			<form action="submit" onSubmit={onFormSubmit}>
+				<VStack spacing={8}>
+					<TextInput name={"name"} label={"Username"} icon={<InfoIcon w={5} h={5} />} />
+					<TextInput name={"email"} label={"Email"} icon={<EmailIcon w={5} h={5} />} />
+					<PasswordInput />
+					<Button isLoading={isLoading} type="submit" variant="simple-teal">
+						Sign Up
+					</Button>
+				</VStack>
+			</form>
+			{isSuccess && <Redirect to="/taskBoard" />}
+		</>
 	);
 };
 
 const SignIn = () => {
-	const { isOpen: isPassword, onOpen: viewPassword, onClose: closePassword } = useDisclosure();
 	const [loginUser, { error, isSuccess, isError, isLoading }] = useLoginUserMutation();
-	const [number, setNumber] = useState(0);
-	const customToast = createStandaloneToast({ theme });
-
-	const [signIn, setSignIn] = useState({
-		email: "",
-		password: "",
-	});
-
-	const onSubmit = () => {
-		loginUser(signIn).finally(() => {});
-		setNumber(number + 1);
+	const onFormSubmit = (event) => {
+		event.preventDefault();
+		const formData = new FormData(event.currentTarget);
+		const fieldValues = Object.fromEntries(formData.entries());
+		loginUser(fieldValues);
 	};
 
-	useEffect(() => {
-		if (isError) {
-			if (error) {
-				var erorrMessage = error.data.error;
-			} else {
-				erorrMessage = "Unable to Sign In due to errors";
-			}
-			customToast({
-				title: "Error",
-				description: `${erorrMessage}`,
-				status: "error",
-				duration: 3000,
-				isClosable: true,
-				position: "top",
-			});
-		}
+	useToast({
+		isError,
+		isSuccess,
+		error,
+		errorDescription: "Unable to login",
+		successTitle: "Log in successfully",
+		successDescription: "Welcome back",
+	});
 
-		if (isSuccess) {
-			customToast({
-				title: "Login successfully",
-				description: "Welcome Back",
-				status: "success",
-				duration: 3000,
-				isClosable: true,
-				position: "top",
-			});
-		}
-	}, [isLoading]);
-	// if (isSuccess) {
-	// 	return <Redirect to="/users" />;
-	// }
 	return (
-		<form action="submit">
-			<VStack spacing={8}>
-				<FormControl id="email" isRequired>
-					<FormLabel fontSize={{ base: "lg", sm: "xl" }}>Email address</FormLabel>
-					<InputGroup>
-						<InputLeftElement children={<EmailIcon w={5} h={5} />} />
-						<Input
-							type="email"
-							placeholder="Your email"
-							onChange={(e) => {
-								setSignIn({ ...signIn, email: e.target.value });
-							}}
-						/>
-					</InputGroup>
-				</FormControl>
-				<FormControl id="password" isRequired>
-					<FormLabel fontSize={{ base: "lg", sm: "xl" }}>Password</FormLabel>
-					<InputGroup>
-						<Input
-							type={isPassword ? "text" : "password"}
-							placeholder="Your password"
-							onChange={(e) => {
-								setSignIn({ ...signIn, password: e.target.value });
-							}}
-						/>
-						<InputRightAddon
-							children={isPassword ? <ViewIcon w={4} h={4} /> : <ViewOffIcon w={4} h={4} />}
-							onClick={() => {
-								isPassword ? closePassword() : viewPassword();
-							}}
-						/>
-					</InputGroup>
-				</FormControl>
+		<>
+			<form action="submit" onSubmit={onFormSubmit}>
+				<VStack spacing={8}>
+					<TextInput name={"email"} label={"Email"} icon={<EmailIcon w={5} h={5} />} />
+					<PasswordInput />
+					<Button isLoading={isLoading} type="submit" variant="simple-teal">
+						Sign In
+					</Button>
+				</VStack>
+			</form>
+			{isSuccess && <Redirect to="/taskBoard" />}
+		</>
+	);
+};
 
-				<Button isLoading={isLoading} onClick={onSubmit} fontSize={"sm"} fontWeight={400} variant="solid" colorScheme="teal" borderRadius="lg">
-					{" "}
-					Sign In
-				</Button>
-				{isSuccess && <Redirect to="/taskBoard" />}
-			</VStack>
-		</form>
+const TextInput = ({ name, label, icon }) => {
+	const [value, setValue] = useState("");
+	return (
+		<FormControl id={name} isRequired>
+			<FormLabel fontSize={{ base: "lg", sm: "xl" }}>{label}</FormLabel>
+			<InputGroup>
+				<InputLeftElement children={icon} />
+				<Input
+					type="text"
+					name={name}
+					placeholder={`Your ${name}`}
+					onChange={(e) => {
+						setValue(e.target.value);
+					}}
+				/>
+			</InputGroup>
+		</FormControl>
+	);
+};
+
+const PasswordInput = () => {
+	const { isOpen: isPassword, onOpen: viewPassword, onClose: closePassword } = useDisclosure();
+	const [value, setValue] = useState("");
+
+	return (
+		<FormControl id="password" isRequired>
+			<FormLabel fontSize={{ base: "lg", sm: "xl" }}>Password</FormLabel>
+			<InputGroup>
+				<Input
+					type={isPassword ? "text" : "password"}
+					placeholder="Your password"
+					name="password"
+					onChange={(e) => {
+						setValue(value);
+					}}
+				/>
+				<InputRightAddon
+					children={isPassword ? <ViewIcon w={4} h={4} /> : <ViewOffIcon w={4} h={4} />}
+					onClick={() => {
+						isPassword ? closePassword() : viewPassword();
+					}}
+				/>
+			</InputGroup>
+		</FormControl>
 	);
 };
 

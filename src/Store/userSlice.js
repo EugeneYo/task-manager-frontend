@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { taskAPI } from "./services/task.service";
 
-// Define the initial state using that type
 const user = {
 	user: {
 		age: 999,
@@ -20,7 +19,6 @@ const user = {
 
 export const userSlice = createSlice({
 	name: "user",
-	// `createSlice` will infer the state type from the `initialState` argument
 	initialState: user,
 	reducers: {
 		initializeUser: (state, action) => {
@@ -52,22 +50,10 @@ export const userSlice = createSlice({
 			console.log(state.token);
 			const token = state.token;
 			const options = { completed, limit, page, sortBy };
-
-			// taskAPI.endpoints.getTasks.initiate({ token, options})
 		},
-		// decrement: (state) => {
-		// 	state.value -= 1;
-		// },
-		// // Use the PayloadAction type to declare the contents of `action.payload`
-		// incrementByAmount: (state, action: PayloadAction<number>) => {
-		// 	state.value += action.payload;
-		// },
 	},
 });
 
 export const { initializeUser, resetUser, updateUser, updateOptions } = userSlice.actions;
-
-// Other code such as selectors can use the imported `RootState` type
-// export const authToken = (state: RootState) => state.user.token;
 
 export default userSlice.reducer;

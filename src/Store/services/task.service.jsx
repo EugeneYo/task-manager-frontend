@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const taskAPI = createApi({
 	reducerPath: "taskAPI",
-	baseQuery: fetchBaseQuery({ baseUrl: "https://my-simple-task-manager.herokuapp.com/api/tasks" }),
+	baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/tasks" }),
 	tagTypes: ["ITask"],
 	endpoints: (builder) => ({
 		createTask: builder.mutation({
@@ -16,15 +16,6 @@ export const taskAPI = createApi({
 				},
 			}),
 			invalidatesTags: ["ITask"],
-			// invalidatesTags: [{ type: "IUser", id: "CREATE" }],
-			// async onQueryStarted(arg, { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }) {
-			// 	console.log("Starting Query On Creating User");
-			// 	try {
-			// 		const result = await queryFulfilled;
-			// 		dispatch(initializeUser(result.data));
-			// 	} catch (e) {}
-			// },
-			// async onCacheEntryAdded(arg, { dispatch, getState, extra, requestId, cacheEntryRemoved, cacheDataLoaded, getCacheEntry }) {},
 		}),
 
 		// GET /tasks/?completed=true

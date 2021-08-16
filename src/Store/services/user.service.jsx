@@ -4,7 +4,7 @@ import { initializeUser, resetUser, updateUser } from "../userSlice";
 
 export const userAPI = createApi({
 	reducerPath: "userAPI",
-	baseQuery: fetchBaseQuery({ baseUrl: "https://my-simple-task-manager.herokuapp.com/api/users" }),
+	baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/users" }),
 	tagTypes: ["IUser"],
 	endpoints: (builder) => ({
 		createUser: builder.mutation({
@@ -13,7 +13,6 @@ export const userAPI = createApi({
 				method: "POST",
 				body,
 			}),
-			// invalidatesTags: [{ type: "IUser", id: "CREATE" }],
 			async onQueryStarted(arg, { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }) {
 				console.log("Starting Query On Creating User");
 				try {
@@ -21,7 +20,6 @@ export const userAPI = createApi({
 					dispatch(initializeUser(result.data));
 				} catch (e) {}
 			},
-			// async onCacheEntryAdded(arg, { dispatch, getState, extra, requestId, cacheEntryRemoved, cacheDataLoaded, getCacheEntry }) {},
 		}),
 		// Endpoint Name function : [builder.mutation/builder.query] <ResponseInterface, RequestInterface>
 		loginUser: builder.mutation({
@@ -38,7 +36,6 @@ export const userAPI = createApi({
 					dispatch(initializeUser(result.data));
 				} catch (e) {}
 			},
-			// async onCacheEntryAdded(arg, { dispatch, getState, extra, requestId, cacheEntryRemoved, cacheDataLoaded, getCacheEntry }) {},
 		}),
 		logoutUser: builder.mutation({
 			query: (token) => ({

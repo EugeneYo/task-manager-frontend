@@ -1,4 +1,4 @@
-import { VStack, HStack, Stack, Box, Flex, Center, SimpleGrid, Text, Divider, Container, Button, useColorModeValue } from "@chakra-ui/react";
+import { VStack, Box, Flex, Text, Divider, Container, Button, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
 import Typewriter from "typewriter-effect";
 import Tilt from "react-parallax-tilt";

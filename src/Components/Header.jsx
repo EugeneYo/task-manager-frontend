@@ -8,12 +8,12 @@ import theme from "../myTheme";
 
 export default function Header() {
 	// to toggle the navbar in mobile
-	const { isOpen, onToggle } = useDisclosure();
 	const [logoutUser, { isSuccess }] = useLogoutUserMutation();
 	const authToken = useSelector((state) => state.user.token);
 	const customToast = createStandaloneToast({
 		theme,
 	});
+	console.log("Hello");
 	// const [isLoggedIn, setLoggedIn] = useState(false);
 
 	// useEffect(() => {

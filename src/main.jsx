@@ -10,6 +10,10 @@ import { Provider } from "react-redux";
 import { ColorModeScript, ChakraProvider, layout } from "@chakra-ui/react";
 import theme from "./myTheme";
 
+console.log(theme.components.Tabs);
+console.log(theme.components.Button);
+console.log(theme);
+
 ReactDOM.render(
 	<React.StrictMode>
 		<Provider store={store}>
