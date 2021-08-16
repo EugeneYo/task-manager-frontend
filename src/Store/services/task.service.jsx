@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const taskAPI = createApi({
 	reducerPath: "taskAPI",
-	baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/tasks" }),
+	baseQuery: fetchBaseQuery({ baseUrl: "https://my-simple-task-manager.herokuapp.com/api/tasks" }),
 	tagTypes: ["ITask"],
 	endpoints: (builder) => ({
 		createTask: builder.mutation({
