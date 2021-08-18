@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
 	Button,
 	Drawer,
@@ -23,17 +23,18 @@ import {
 	usePrefersReducedMotion,
 	keyframes,
 	HStack,
-} from "@chakra-ui/react";
-import { ArrowForwardIcon, ArrowLeftIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { useSelector } from "react-redux";
-import { useUpdateUserMutation } from "../Store/services/user.service";
-import { Link as RouterLink } from "react-router-dom";
-import theme from "../myTheme";
-import Settings from "./Settings";
-import { FaGithub } from "react-icons/fa";
-import useToast from "../Hooks/useToast";
+} from '@chakra-ui/react';
+import { ArrowForwardIcon, ArrowLeftIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { useSelector } from 'react-redux';
+import { useUpdateUserMutation } from '../Store/services/user.service';
+import { Link as RouterLink } from 'react-router-dom';
+import Settings from './Settings';
+import { FaGithub } from 'react-icons/fa';
+import useToast from '../Hooks/useToast';
 
 const MenuBox = () => {
+	console.log('%cMenuBox Re-render', 'color: #ff9671;');
+
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { isOpen: isPassword, onOpen: viewPassword, onClose: closePassword } = useDisclosure();
 	const [updateUser, { error, isError, isLoading, isSuccess }] = useUpdateUserMutation();
@@ -43,20 +44,20 @@ const MenuBox = () => {
 	const [updateDetails, setUpdateDetails] = useState({
 		name: user.name,
 		email: user.email,
-		password: "",
+		password: '',
 	});
 	const prefersReducedMotion = usePrefersReducedMotion();
 	const smoothAnimation = keyframes`from {transform: translateX(0);} 50%{transform : translateX(10px);} to{transform: translateX(0)}`;
 	const animation = prefersReducedMotion ? undefined : `${smoothAnimation} infinite 2s linear`;
 	const onUpdate = () => {
-		updateUser({ updateDetails, token }).finally(() => {});
+		updateUser({ updateDetails, token });
 		setIsEdit(!isEdit);
 	};
 	const onCancel = () => {
 		setUpdateDetails({
 			name: user.name,
 			email: user.email,
-			password: "",
+			password: '',
 		});
 		setIsEdit(!isEdit);
 	};
@@ -65,10 +66,19 @@ const MenuBox = () => {
 		isError,
 		isSuccess,
 		error,
-		errorDescription: "Unable to update your profile",
-		successTitle: "Updated successfully",
-		successDescription: "Your profile is updated",
+		errorDescription: 'Unable to update your profile',
+		successTitle: 'Updated successfully',
+		successDescription: 'Your profile is updated',
 	});
+
+	useEffect(() => {
+		setUpdateDetails({
+			name: user.name,
+			email: user.email,
+			password: '',
+		});
+	}, [user]);
+
 	return (
 		<>
 			<Button
@@ -80,14 +90,14 @@ const MenuBox = () => {
 				right={{ base: -14 }}
 				transform="auto"
 				translateX="0"
-				fontSize={{ base: "sm", sm: "md" }}
+				fontSize={{ base: 'sm', sm: 'md' }}
 				fontWeight={300}
 				variant="solid"
 				borderLeftRadius="lg"
 				alignSelf="self-end"
 				transition="all ease-in-out 0.5s"
 				_hover={{
-					translateX: "-3.3em",
+					translateX: '-3.3em',
 				}}
 				m={0}
 				style={{ zIndex: 10 }}
@@ -104,7 +114,7 @@ const MenuBox = () => {
 
 					<DrawerBody>
 						<Text
-							fontSize={{ base: "2xl" }}
+							fontSize={{ base: '2xl' }}
 							bgGradient="linear(to-r, purple.600, blue.400, teal.500)"
 							bgClip="text"
 							textAlign="center"
@@ -114,7 +124,7 @@ const MenuBox = () => {
 							Simple Task Manager
 						</Text>
 						<Avatar bg="teal.400" mx="auto" w={28} h={28} alignSelf="center" display="block" my={8} />
-						<Text textAlign="center" fontSize={"xl"}>
+						<Text textAlign="center" fontSize={'xl'}>
 							Profile
 						</Text>
 
@@ -122,8 +132,8 @@ const MenuBox = () => {
 							<Text align="center">
 								Please
 								<Link as={RouterLink} to="/form" onClick={onClose} color="teal.500">
-									{" "}
-									Sign In{" "}
+									{' '}
+									Sign In{' '}
 								</Link>
 								to access
 							</Text>
@@ -159,7 +169,7 @@ const MenuBox = () => {
 								</InputGroup>
 								<InputGroup>
 									<Input
-										type={isPassword ? "text" : "password"}
+										type={isPassword ? 'text' : 'password'}
 										placeholder="Your password"
 										variant="filled"
 										isDisabled={!isEdit}
@@ -181,7 +191,7 @@ const MenuBox = () => {
 											onClick={() => {
 												setIsEdit(!isEdit);
 											}}
-											fontSize={"sm"}
+											fontSize={'sm'}
 											fontWeight={400}
 											variant="solid"
 											colorScheme="teal"
@@ -193,10 +203,10 @@ const MenuBox = () => {
 									)}
 									{isEdit && (
 										<>
-											<Button onClick={onUpdate} fontSize={"sm"} fontWeight={400} variant="solid" colorScheme="teal" borderRadius="xl" m={1}>
+											<Button onClick={onUpdate} fontSize={'sm'} fontWeight={400} variant="solid" colorScheme="teal" borderRadius="xl" m={1}>
 												Update
 											</Button>
-											<Button onClick={onCancel} fontSize={"sm"} fontWeight={400} variant="solid" colorScheme="gray" borderRadius="xl" m={1}>
+											<Button onClick={onCancel} fontSize={'sm'} fontWeight={400} variant="solid" colorScheme="gray" borderRadius="xl" m={1}>
 												Cancel
 											</Button>
 										</>
@@ -215,8 +225,8 @@ const MenuBox = () => {
 										fontWeight="400"
 										bg="transparent"
 										_hover={{
-											bg: "teal.400",
-											color: "white",
+											bg: 'teal.400',
+											color: 'white',
 										}}
 										rightIcon={<ArrowForwardIcon animation={animation} />}
 										as={RouterLink}
@@ -235,8 +245,8 @@ const MenuBox = () => {
 								fontWeight="400"
 								bg="transparent"
 								_hover={{
-									bg: "teal.400",
-									color: "white",
+									bg: 'teal.400',
+									color: 'white',
 								}}
 								rightIcon={<ArrowForwardIcon animation={animation} />}
 								as={RouterLink}
@@ -245,6 +255,23 @@ const MenuBox = () => {
 								transition="all ease-in-out 0.5s"
 							>
 								Home
+							</Button>
+							<Button
+								w="100%"
+								my={1}
+								fontWeight="400"
+								bg="transparent"
+								_hover={{
+									bg: 'teal.400',
+									color: 'white',
+								}}
+								rightIcon={<ArrowForwardIcon animation={animation} />}
+								as={RouterLink}
+								to="/about"
+								onClick={onClose}
+								transition="all ease-in-out 0.5s"
+							>
+								About
 							</Button>
 						</Center>
 					</DrawerBody>
@@ -256,7 +283,7 @@ const MenuBox = () => {
 								leftIcon={<FaGithub />}
 								fontWeight="500"
 								onClick={() => {
-									window.location.href = "https://github.com/EugeneYo";
+									window.location.href = 'https://github.com/EugeneYo';
 								}}
 							>
 								My Github

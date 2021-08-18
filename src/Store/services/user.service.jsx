@@ -4,7 +4,7 @@ import { initializeUser, resetUser, updateUser } from "../userSlice";
 
 export const userAPI = createApi({
 	reducerPath: "userAPI",
-	baseQuery: fetchBaseQuery({ baseUrl: "https://my-simple-task-manager.herokuapp.com/api/users" }),
+	baseQuery: fetchBaseQuery({ baseUrl: `${import.meta.env.VITE_URL}/users` }),
 	tagTypes: ["IUser"],
 	endpoints: (builder) => ({
 		createUser: builder.mutation({

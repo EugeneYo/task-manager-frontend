@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, DeleteIcon } from "@chakra-ui/icons";
+import { ArrowLeftIcon, DeleteIcon } from '@chakra-ui/icons';
 import {
 	useDisclosure,
 	Flex,
@@ -24,17 +24,19 @@ import {
 	Switch,
 	HStack,
 	SkeletonText,
-} from "@chakra-ui/react";
-import React, { useRef, useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { HiOutlineDocumentAdd } from "react-icons/hi";
-import Tilt from "react-parallax-tilt";
-import { useCreateTaskMutation, useDeleteTaskMutation, useGetTasksQuery, useUpdateTaskMutation } from "../Store/services/task.service";
-import { BiEdit } from "react-icons/bi";
-import useToast from "../Hooks/useToast";
-import convertDate from "../Utils/ConvertDate";
+} from '@chakra-ui/react';
+import React, { useRef, useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { HiOutlineDocumentAdd } from 'react-icons/hi';
+import Tilt from 'react-parallax-tilt';
+import { useCreateTaskMutation, useDeleteTaskMutation, useGetTasksQuery, useUpdateTaskMutation } from '../Store/services/task.service';
+import { BiEdit } from 'react-icons/bi';
+import useToast from '../Hooks/useToast';
+import convertDate from '../Utils/ConvertDate';
 
 export default function TaskBoard() {
+	console.log('%cTaskBoard Re-render', 'color: #ff9671;');
+
 	return (
 		<Box pos="relative" minW="100vw" minH="80vh" p={32} m={0} mt={15} p={0} pt={10} mx={0} overflow="hidden">
 			<SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 3, xl: 5 }} alignItems="center" placeItems="center" spacing={4}>
@@ -48,7 +50,7 @@ export default function TaskBoard() {
 const CreateBox = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const token = useSelector((state) => state.user.token);
-	const [createNewTask, { data, error, isError, isSuccess, isLoading }] = useCreateTaskMutation();
+	const [createNewTask, { error, isError, isSuccess }] = useCreateTaskMutation();
 	const prefersReducedMotion = usePrefersReducedMotion();
 	const smoothAnimation = keyframes`from {transform: rotate(0deg);} 2%{transform : rotate(5deg);} 6%{transform : rotate(-5deg);} 8%{transform: rotate(0);} to{transform:rotate(0);}`;
 	const animation = prefersReducedMotion ? undefined : `${smoothAnimation} infinite 5s linear`;
@@ -64,16 +66,16 @@ const CreateBox = () => {
 		isError,
 		isSuccess,
 		error,
-		errorDescription: "Unable to create new task due to errors",
-		successTitle: "Task created",
-		successDescription: "New task is stored in the database",
+		errorDescription: 'Unable to create new task due to errors',
+		successTitle: 'Task created',
+		successDescription: 'New task is stored in the database',
 	});
-	console.log("%cCreateBox Re-render", "color: #ff9671;");
+	console.log('%cCreateBox Re-render', 'color: #ff9671;');
 	return (
 		<>
 			<Tilt tiltReverse={true} scale={1} tiltAngleXInitial={0} tiltAngleYInitial={0}>
 				<Center
-					bg={useColorModeValue("white", "#313b47")}
+					bg={useColorModeValue('white', '#313b47')}
 					w={250}
 					h={250}
 					p={0}
@@ -82,7 +84,7 @@ const CreateBox = () => {
 					alignSelf="center"
 					borderRadius="lg"
 					flexDirection="column"
-					_hover={{ borderColor: "teal.400", borderWidth: "2px" }}
+					_hover={{ borderColor: 'teal.400', borderWidth: '2px' }}
 					role="group"
 					onClick={onOpen}
 					animation={animation}
@@ -91,9 +93,9 @@ const CreateBox = () => {
 						as={HiOutlineDocumentAdd}
 						w={20}
 						h={20}
-						color={useColorModeValue("teal.400", "white")}
+						color={useColorModeValue('teal.400', 'white')}
 						_groupHover={{
-							color: "teal.400",
+							color: 'teal.400',
 						}}
 					/>
 					<Text>Create New Task</Text>
@@ -103,7 +105,7 @@ const CreateBox = () => {
 			<Modal isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
 				<ModalContent>
-					<ModalHeader fontWeight={500} fontSize={"xl"} color={useColorModeValue("teal.500", "teal.400")}>
+					<ModalHeader fontWeight={500} fontSize={'xl'} color={useColorModeValue('teal.500', 'teal.400')}>
 						Create New Task
 					</ModalHeader>
 					<ModalCloseButton />
@@ -114,10 +116,10 @@ const CreateBox = () => {
 								placeholder="Begin here..."
 								size="md"
 								_focus={{
-									borderColor: "teal.500",
-									borderWidth: "2px",
+									borderColor: 'teal.500',
+									borderWidth: '2px',
 								}}
-								h={{ base: "30vh", md: "50vh" }}
+								h={{ base: '30vh', md: '50vh' }}
 								name="description"
 							/>
 						</form>
@@ -135,22 +137,22 @@ const CreateBox = () => {
 };
 
 const TaskLists = () => {
-	console.log("%cTaskLists Re-render", "color: #ff9671;");
+	console.log('%cTaskLists Re-render', 'color: #ff9671;');
 	const { user, token, options } = useSelector((state) => state.user);
 	const { data, isFetching, isError, isLoading, isSuccess } = useGetTasksQuery({ token, options });
 	const [deleteTask, { error: deleteError, isError: isDeleteError, isSuccess: isDeleteSuccess, isLoading: isDeleteLoading }] =
 		useDeleteTaskMutation();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [task, setTask] = useState({
-		_id: "",
+		_id: '',
 		completed: false,
-		createdAt: "",
-		updatedAt: "",
-		description: "",
+		createdAt: '',
+		updatedAt: '',
+		description: '',
 		author: user._id,
 		__v: 0,
 	});
-	const [isSelectedDelete, setIsSelectedDelete] = useState("");
+	const [isSelectedDelete, setIsSelectedDelete] = useState('');
 
 	const onEdit = (selectedTask) => {
 		setTask(selectedTask);
@@ -167,15 +169,15 @@ const TaskLists = () => {
 		isError: isDeleteError,
 		isSuccess: isDeleteSuccess,
 		error: deleteError,
-		errorDescription: "Unable to delete the selected task",
-		successTitle: "Delete Successfully",
-		successDescription: "Selected task has been deleted",
+		errorDescription: 'Unable to delete the selected task',
+		successTitle: 'Delete Successfully',
+		successDescription: 'Selected task has been deleted',
 	});
 
 	if (isFetching || isLoading) {
 		return [...Array(10)].map((e, i) => (
 			<Box
-				bg={useColorModeValue("white", "#313b47")}
+				bg={useColorModeValue('white', '#313b47')}
 				w={250}
 				h={250}
 				p={5}
@@ -184,11 +186,11 @@ const TaskLists = () => {
 				alignSelf="center"
 				borderRadius="lg"
 				flexDirection="column"
-				_hover={{ borderColor: "teal.400", borderWidth: "2px" }}
+				_hover={{ borderColor: 'teal.400', borderWidth: '2px' }}
 				role="group"
 				pos="relative"
 				justifyContent="space-between"
-
+				key={i}
 				// onClick={onOpen}
 			>
 				<SkeletonText mt="4" noOfLines={3} spacing="4" />
@@ -203,7 +205,7 @@ const TaskLists = () => {
 					{data.map((each) => (
 						<Tilt tiltReverse={true} scale={1} tiltAngleXInitial={0} tiltAngleYInitial={0} tiltMaxAngleX={10} tiltMaxAngleY={10} key={each._id}>
 							<Box
-								bg={useColorModeValue("white", "#313b47")}
+								bg={useColorModeValue('white', '#313b47')}
 								w={250}
 								h={250}
 								p={0}
@@ -212,15 +214,15 @@ const TaskLists = () => {
 								alignSelf="center"
 								borderRadius="lg"
 								flexDirection="column"
-								_hover={{ borderColor: "teal.400", borderWidth: "2px" }}
+								_hover={{ borderColor: 'teal.400', borderWidth: '2px' }}
 								role="group"
 								pos="relative"
 								justifyContent="space-between"
 								// onClick={onOpen}
 							>
 								<Badge
-									bg={each.completed ? "green.400" : "#ff9671"}
-									color={useColorModeValue("white", "#313b47")}
+									bg={each.completed ? 'green.400' : '#ff9671'}
+									color={useColorModeValue('white', '#313b47')}
 									borderTopLeftRadius="lg"
 									px={1}
 									m={0}
@@ -228,7 +230,7 @@ const TaskLists = () => {
 									fontSize="xs"
 									pos="absolute"
 								>
-									{each.completed ? "Completed" : "In progress"}
+									{each.completed ? 'Completed' : 'In progress'}
 								</Badge>
 
 								<Box h={5} />
@@ -262,11 +264,10 @@ const TaskLists = () => {
 							</Box>
 						</Tilt>
 					))}
-					<EditModal task={task} setTask={setTask} token={token} isOpen={isOpen} onClose={onClose} />
 				</>
 			) : (
 				<Box
-					bg={useColorModeValue("white", "#313b47")}
+					bg={useColorModeValue('white', '#313b47')}
 					w={250}
 					h={250}
 					p={0}
@@ -275,15 +276,14 @@ const TaskLists = () => {
 					alignSelf="center"
 					borderRadius="lg"
 					flexDirection="column"
-					_hover={{ borderColor: "teal.400", borderWidth: "2px" }}
+					_hover={{ borderColor: 'teal.400', borderWidth: '2px' }}
 					role="group"
 					pos="relative"
 					justifyContent="space-between"
-					// onClick={onOpen}
 				>
 					<Badge
 						bg="red.400"
-						color={useColorModeValue("white", "#313b47")}
+						color={useColorModeValue('white', '#313b47')}
 						borderTopLeftRadius="lg"
 						px={1}
 						m={0}
@@ -311,18 +311,21 @@ const TaskLists = () => {
 					</Box>
 				</Box>
 			)}
+			<EditModal task={task} setTask={setTask} token={token} isOpen={isOpen} onClose={onClose} />
 		</>
 	);
 };
 
 const EditModal = ({ task, setTask, token, isOpen, onClose }) => {
+	console.log('%cEditModal Re-render', 'color: #ff9671;');
+
 	const [updateTask, { error, isError, isSuccess }] = useUpdateTaskMutation();
 	const formRef = useRef();
 
 	const onUpdate = (e) => {
 		const formData = new FormData(formRef.current);
 		const fieldValues = Object.fromEntries(formData.entries());
-		const isCompleted = fieldValues.hasOwnProperty("completed") ? "true" : "false";
+		const isCompleted = fieldValues.hasOwnProperty('completed') ? 'true' : 'false';
 		updateTask({ _id: task?._id, description: fieldValues.description, completed: isCompleted, token });
 		onClose();
 	};
@@ -330,17 +333,16 @@ const EditModal = ({ task, setTask, token, isOpen, onClose }) => {
 		isError,
 		isSuccess,
 		error,
-		errorDescription: "Unable to update the selected task",
-		successTitle: "Update Successfully",
-		successDescription: "Selected task has been updated",
+		errorDescription: 'Unable to update the selected task',
+		successTitle: 'Update Successfully',
+		successDescription: 'Selected task has been updated',
 	});
-	console.log("%cEditModal Re-render", "color: #ff9671;");
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose}>
 			<ModalOverlay />
 			<ModalContent>
-				<ModalHeader fontWeight={500} fontSize={"xl"} color={useColorModeValue("teal.500", "teal.400")}>
+				<ModalHeader fontWeight={500} fontSize={'xl'} color={useColorModeValue('teal.500', 'teal.400')}>
 					Update Current Task
 				</ModalHeader>
 				<ModalCloseButton />
@@ -369,7 +371,7 @@ const EditModal = ({ task, setTask, token, isOpen, onClose }) => {
 				</ModalBody>
 
 				<ModalFooter>
-					<Button onClick={onUpdate} fontSize={"sm"} fontWeight={400} variant="solid" colorScheme="teal" borderRadius="lg">
+					<Button onClick={onUpdate} fontSize={'sm'} fontWeight={400} variant="solid" colorScheme="teal" borderRadius="lg">
 						Update
 					</Button>
 				</ModalFooter>
@@ -386,10 +388,10 @@ const TextAreaInput = ({ taskDescription }) => {
 			placeholder="Begin here..."
 			size="md"
 			_focus={{
-				borderColor: "teal.500",
-				borderWidth: "2px",
+				borderColor: 'teal.500',
+				borderWidth: '2px',
 			}}
-			h={{ base: "30vh", md: "50vh" }}
+			h={{ base: '30vh', md: '50vh' }}
 			value={description}
 			onChange={(e) => {
 				setDescription(e.target.value);
