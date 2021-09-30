@@ -1,7 +1,5 @@
 # Simple Task Manager - Frontend
 
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/EugeneYo/Pokemon-Journal)
-
 # Description
 
 - A very simple task manager using with the [backend](https://github.com/EugeneYo/task-manager-backend) developed using NodeJS
