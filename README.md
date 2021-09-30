@@ -2,7 +2,7 @@
 
 # Description
 
-- A very simple task manager using with the [backend](https://github.com/EugeneYo/task-manager-backend) developed using NodeJS
+- A very simple task manager using with the [RESTful APIs](https://github.com/EugeneYo/task-manager-backend) developed using NodeJS
 
 # Preview
 
