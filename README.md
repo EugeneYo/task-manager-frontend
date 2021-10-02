@@ -3,7 +3,7 @@
 # Description
 
 - A very simple task manager using with the [RESTful APIs](https://github.com/EugeneYo/task-manager-backend) developed using NodeJS
-
+- Demo : [click here](https://my-simple-task-manager.netlify.app/)
 # Preview
 
 ![Home](https://user-images.githubusercontent.com/31185780/135414156-992e16eb-43fd-49db-804e-7545e0c021fa.png)
